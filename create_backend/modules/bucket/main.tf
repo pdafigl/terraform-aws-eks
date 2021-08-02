@@ -17,7 +17,6 @@ resource "aws_s3_bucket" "terraform_state" {
   # Change the tags. you can create it like variables
   tags = {
     Project     = var.project_name
-    Environment = var.environment
   }
 }
 
@@ -38,6 +37,5 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
   # Change the tags. you can create it like variables
   tags = {
     Project     = var.project_name
-    Environment = var.environment
   }
 }

@@ -4,7 +4,7 @@ resource "aws_iam_policy" "terraform_eks_policy" {
 
   policy = <<EOF
 {
-    "Version": "2021-07-19",
+    "Version": "2012-10-17",
     "Statement": [
         {
             "Sid": "VisualEditor0",
@@ -109,7 +109,7 @@ resource "aws_iam_policy" "terraform_eks_policy" {
                 "iam:DeleteInstanceProfile",
                 "iam:DeleteOpenIDConnectProvider",
                 "iam:DeletePolicy",
-                "iam:DeletePolicyVersion"
+                "iam:DeletePolicyVersion",
                 "iam:DeleteRole",
                 "iam:DeleteRolePolicy",
                 "iam:DeleteServiceLinkedRole",
@@ -127,24 +127,7 @@ resource "aws_iam_policy" "terraform_eks_policy" {
                 "iam:TagOpenIDConnectProvider",
                 "iam:TagRole",
                 "iam:UntagRole",
-                "iam:UpdateAssumeRolePolicy",
-                // Following permissions are needed if cluster_enabled_log_types is enabled
-                "logs:CreateLogGroup",
-                "logs:DescribeLogGroups",
-                "logs:DeleteLogGroup",
-                "logs:ListTagsLogGroup",
-                "logs:PutRetentionPolicy",
-                // Following permissions for working with secrets_encryption example
-                "kms:CreateAlias",
-                "kms:CreateGrant",
-                "kms:CreateKey",
-                "kms:DeleteAlias",
-                "kms:DescribeKey",
-                "kms:GetKeyPolicy",
-                "kms:GetKeyRotationStatus",
-                "kms:ListAliases",
-                "kms:ListResourceTags",
-                "kms:ScheduleKeyDeletion"
+                "iam:UpdateAssumeRolePolicy"
             ],
             "Resource": "*"
         }
@@ -158,13 +141,13 @@ EOF
 resource "aws_iam_user" "terraform_eks_user" {
   name = var.user_name
   tags = {
-    Name = "User to create EKS Cluster"
+    Project = var.project_name
   }
 }
 
 # Create access and secret keys for user
 resource "aws_iam_access_key" "terraform_eks_user_access_key" {
-  user = aws_iam_user.eks_user.name
+  user = aws_iam_user.terraform_eks_user.name
 }
 
 # Attach the policy to user

@@ -5,17 +5,16 @@ variable "region" {
   default = "eu-west-1"
 }
 
-# Bucket name
-variable "bucket_name" {
-  type = string
-}
-
 # Variables for IAM role and user Definition
-variable "user_name" {
+variable "eks_user_name" {
   type = string
 
 }
+variable "eks_policy_name" {
+  type = string
+}
 
-variable "policy_name" {
+# Tags values
+variable "project_name" {
   type = string
 }

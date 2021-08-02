@@ -36,7 +36,7 @@ EOF
 resource "aws_iam_user" "teraform_state_user" {
   name = var.user_name
   tags = {
-    Name = "User for acces to bucket created for terraform state"
+    Project     = var.project_name
   }
 }
 

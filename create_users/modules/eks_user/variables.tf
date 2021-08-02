@@ -8,3 +8,8 @@ variable "policy_name" {
   type = string
 }
 
+
+# Tags values
+variable "project_name" {
+  type = string
+}

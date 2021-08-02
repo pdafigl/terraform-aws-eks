@@ -17,3 +17,8 @@ variable "bucket_arn" {
 variable "dynamodb_table_name" {
   type = string
 }
+
+# Tags values
+variable "project_name" {
+  type = string
+}

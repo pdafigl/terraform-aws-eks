@@ -1,6 +1,6 @@
 output "terraform_eks_user_access_key" {
   description = "Return the user access key"
-  value       = aws_iam_access_key.terraform_eks_user.id
+  value       = aws_iam_access_key.terraform_eks_user_access_key.id
   sensitive   = true
 }
 

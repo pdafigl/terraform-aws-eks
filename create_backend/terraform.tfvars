@@ -7,4 +7,3 @@ policy_name = "tfstate_user_policy"
 
 # Tags values
 project_name = "CLARKS"
-environment  = "DEV"

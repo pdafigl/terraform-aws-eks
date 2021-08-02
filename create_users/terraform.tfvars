@@ -1,4 +1,6 @@
-region              = "eu-west-1"
+region = "eu-west-1"
 #
-user_name   = "eks_user"
-policy_name = "eks_user_policy"
+eks_user_name   = "eks_user"
+eks_policy_name = "eks_user_policy"
+
+project_name = "CLARKS"
