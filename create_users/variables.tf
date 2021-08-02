@@ -1,11 +1,3 @@
-# Access and secret keys
-variable "access_key" {
-  type = string
-}
-
-variable "secret_key" {
-  type = string
-}
 
 # Region to deploy infrastructure
 variable "region" {
@@ -15,11 +7,6 @@ variable "region" {
 
 # Bucket name
 variable "bucket_name" {
-  type = string
-}
-
-# Dynamo table name 
-variable "dynamodb_table_name" {
   type = string
 }
 

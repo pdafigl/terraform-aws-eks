@@ -1,12 +1,3 @@
-# Access and secret keys
-variable "access_key" {
-  type = string
-}
-
-variable "secret_key" {
-  type = string
-}
-
 # Region to deploy infrastructure
 variable "region" {
   type    = string
@@ -30,5 +21,14 @@ variable "user_name" {
 }
 
 variable "policy_name" {
+  type = string
+}
+
+# Tags values
+variable "project_name" {
+  type = string
+}
+
+variable "environment" {
   type = string
 }

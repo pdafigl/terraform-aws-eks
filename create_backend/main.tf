@@ -3,7 +3,8 @@ module "bucket" {
   source              = "./modules/bucket"
   bucket_name         = var.bucket_name
   dynamodb_table_name = var.dynamodb_table_name
-
+  project_name        = var.project_name
+  environment         = var.environment
 }
 
 # Create iam policy and user for work with the created bucket, using bucket_iam module

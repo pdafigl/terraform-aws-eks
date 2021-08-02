@@ -13,3 +13,13 @@ variable "bucket_name" {
 variable "dynamodb_table_name" {
   type = string
 }
+
+# Tags values
+variable "project_name" {
+  type = string
+}
+
+variable "environment" {
+  type = string
+}
+

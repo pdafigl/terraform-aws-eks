@@ -1,7 +1,7 @@
 
 # For create de bucket resource
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = var.bucket_name
+  bucket = "${var.bucket_name}-${lower(var.project_name)}"
 
   # Enable versioning
   versioning {
@@ -16,8 +16,8 @@ resource "aws_s3_bucket" "terraform_state" {
 
   # Change the tags. you can create it like variables
   tags = {
-    Name        = "S3 Remote Terraform State Store"
-    Environment = "Demo BK8S"
+    Project     = var.project_name
+    Environment = var.environment
   }
 }
 
@@ -37,7 +37,7 @@ resource "aws_dynamodb_table" "terraform_state_lock" {
 
   # Change the tags. you can create it like variables
   tags = {
-    Name        = "DynamoDB Terraform State Lock Table"
-    Environment = "Demo BK8S"
+    Project     = var.project_name
+    Environment = var.environment
   }
 }

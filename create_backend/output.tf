@@ -11,9 +11,12 @@ output "dynamodb_arn" {
 output "terraform_state_access_key" {
   description = "Show the access_key to use the bucket"
   value       = module.user_policy.terraform_state_access_key
+  sensitive   = true
 }
 
 output "terraform_state_secret_key" {
   description = "Show the secret_key to use the bucket"
   value       = module.user_policy.terraform_state_secret_key
+  sensitive   = true
+
 }
