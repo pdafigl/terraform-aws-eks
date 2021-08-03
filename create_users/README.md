@@ -26,7 +26,7 @@ En este apartado se incluyen los siguientes contenidos:
 Usaremos la configuración del archivo **~/.aws/credentials** definido ya para anteriores componentes desplegados. Se lanzará el comando para inicialiar el entorno para el despliegue, haciendo que se descarguen todas las librerías necesarias para los distintos providers utilizados, para las módulos y recursos, etc. El comando a lanzar:
 
 ```bash
-terraform plan -out archivo.out
+terraform init
 ```
 Para crear el plan de ejecución y hacerlo sobre un archivo .out que se usará después para realizar el despliegue, se lanzará:
 ```bash
