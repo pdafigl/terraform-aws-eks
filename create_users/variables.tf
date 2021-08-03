@@ -14,6 +14,11 @@ variable "eks_policy_name" {
   type = string
 }
 
+variable "ecr_user_name" {
+  type = string
+}
+
+
 # Tags values
 variable "project_name" {
   type = string

@@ -5,3 +5,9 @@ module "user_policy" {
   policy_name  = var.eks_policy_name
   project_name = var.project_name
 }
+
+module "ecr_user" {
+  source       = "./modules/iam_user"
+  user_name    = var.ecr_user_name
+  project_name = var.project_name
+}

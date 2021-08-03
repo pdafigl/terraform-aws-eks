@@ -1,56 +1,53 @@
 # Objetivo de este apartado
 
-Recoge el código necesario para crear un backend de Terraform sobre S3, par alamacenar los archivos de estado. Las ventajas de trabajar con este tipo de backend, en lugar de utilizar almacenamiento local, son:
-- La posibilidad de permitir el trabajo colaborativo.
-- Poder ejecutar acciones sobre la infraestructura desplegada, a través de Terraform, desde cualquier equipo.
-- Poder usar el estado de un despliegue como datasource para otro, evitando el tener de replicar configuraciones en variables. Se verá un ejemplo de este uso en este proyecto, a la hora de desplegar un grupo de nodos gestionados por EKS.
-
+Recoge el código necesario para crear una serie de usuarios que se utilizarán durante el despliegue del resto de infraestructura, así como para tareas posteriores. En concreto crea:
+- Usuario admin de EKS, en este caso además, se le asigna la policy necesaria para disponer de los permisos necesarios.
+- Usuario que se utilizará para gestionar las imágenes en ECR. En este caso no se asigna ninguna policy, solo lo crea, ya que las policies se crearán a partir de cada repositorio en eCr creado. De esta manera, será fácil el crear usuarios específicos para repositorios.
+- El código para crear el usuario de ECR, permite crear usuarios de API en general, ya que no se le asigna ningún rol ni ninguna policy específica.
 # Componentes que se crean en este punto:
 
-- Un bucket de S3.
-- Una tabla en DynamoDB para controlo de bloqueo de objetos en el bucket para evitar que se escriba en el mismo archivo de estado de forma simultánea desde dos o más puntos distintos.
-- Una policy IAM que permite trabajar tanto con el bucket, como con la tabla de DyanmoDB.
-- Un usuario IAM para API al que se le aplicará la policy creada, para usarlo en las tareas de gestión del bucket y la tabla DynamoDB.
+- Usuario admin de EKS
+- Usuario gestor de repositorio ECR.
 
 # Contenido
 
 En este apartado se incluyen los siguientes contenidos:
 - **init.tf**: en este archivo se incluye el código de configuración del provider de AWS.
-- **main.tf**: en este archivo se incluye el código que crea en sí la infraestructura, llamando a los módulos de **bucket** y **bucket_iam**.
-- **modules**: directorio en donde se incluyen las definiciones de los módulos de **bucket** y **bucket_iam**.
-  - **bucket**: directorio que recoge los archivos para crear tanto el bucket de S3, como la tabla de DynamoDB.
-  - **bucket_iam**: directorio que recoge los archivos para crear tanto la policy como el usuario que se usarán para gestionar el Bucket y la tabla DunamoDB.
-- **output.tf**: incluye el código para los outputs del despliegue de esta parte de la infraestructura. Entre ellos están el **access_key** y **secret_key** del usuario IAM, para disponer de ellos y usarlos en otros puntos del despliegue.
+- **main.tf**: en este archivo se incluye el código que crea en sí la infraestructura, llamando a los módulos de **eks_user** y **iam_user**.
+- **modules**: directorio en donde se incluyen las definiciones de los módulos de **eks_user** y **iam_user**.
+  - **eks_user**: directorio que recoge los archivos para crear el usuario admin de EKS.
+  - **iam_user**: directorio que recoge los archivos para crear usuarios de API.
+- **output.tf**: incluye el código para los outputs del despliegue de esta parte de la infraestructura. Entre ellos están el **access_key** y **secret_key** de los usuarios IAM, para disponer de ellos y usarlos en otros puntos del despliegue.
 - **terraform.tfvars**: incluye la asignación de valores para inputs (variables) del despliegue de la infraestructura.
 - **variables.tf**: incluye la definición de inputs (o variables) que se usa en el despliegue de la infraestructura.
 
 # Cómo lanzarlo
 
-Nos ubicaremos en el directorio create_backend. Para este caso, las credenciales las paseremos como variables de entorno, con lo que se crearán dos variables de este tipo de la siguiente manera:
+Usaremos la configuración del archivo **~/.aws/credentials** definido ya para anteriores componentes desplegados. Se lanzará el comando para inicialiar el entorno para el despliegue, haciendo que se descarguen todas las librerías necesarias para los distintos providers utilizados, para las módulos y recursos, etc. El comando a lanzar:
 
 ```bash
-export TF_VAR_access_key=<access_key_usuario_principal>
-export TF_VAR_secret_key=<secret_key_usuario_principal>
-```
-El usuario que se utilizará, es el usuario IAM que se cree antes de empezar a desplegar la infraestructura, se comenta en el README.md principal del repositorio, las características de este usuario.
-
-Una vez creadas estas variables, se procede a lanzar la inicialización para Tertraform lanzando el siguiente comando:
-```hcl
-terraform init
-```
-Este comando descargará todas las librerías necesarias para el provider AWS y los módulos y recursos a utilizar.
-Después de este paso, se elaborará el plan de ejecución y se volcará a una archivo **.out** para tenerlo de base para aplicar los cambios en el despliegue. Para ello se lanza:
-```hcl
 terraform plan -out archivo.out
 ```
-Por último, se lanza el despliegue de la infraestructura y componentes con el cmando:
-```hcl
+Para crear el plan de ejecución y hacerlo sobre un archivo .out que se usará después para realizar el despliegue, se lanzará:
+```bash
+terraform plan -out archivo.out
+```
+Una vez se dispone del plan de ejecución, se lanza el despliegue:
+```bash
 terraform apply archivo.out
 ```
-Al finalizar el despliegue se mostrarán las salidas de información definidas dentro del archivo **output.tf**. Para poder consultar estos valores, se podrá, accediendo al directorio create_backend, ejecutar el comando **terraform output**, para ver el todos los outputs definidos o **terraform output nombre_output_concreto** para oebtener el valor para uno de los outputs en concreto, en lugar de todos. Por ejemplo:
-```hcl
-terraform output
-terraform output bucket_arn
+Al finalizar el despliegue, se mostrarán una serie de salidas por pantalla, asociadas a los outputs definidos en el archivo output.tf: 
+```bash
+terraform_ecr_user_access_key = <sensitive>
+terraform_ecr_user_secret_key = <sensitive>
+terraform_eks_user_access_key = <sensitive>
+terraform_eks_user_secret_key = <sensitive>
+``` 
+En este caso, se trata de información sensible, de ahí que se muestre oculta, para poder ver esta información, se puede, para cada uno de los outputs, el comando:
+```bash
+terraform output -raw terraform_ecr_user_access_key
 ```
+Bastaría con cambiar el nombre del output la que queramos consultar, para ver el valor de esa salida.
+
 
 
