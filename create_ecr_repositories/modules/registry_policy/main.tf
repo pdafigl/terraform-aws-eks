@@ -15,7 +15,10 @@ resource "aws_ecr_registry_policy" "ecr_registry_policy" {
         Sid    = "${var.registry_policy_name}",
         Effect = "Allow",
         Principal = {
-          "AWS" : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root"
+          "AWS" : [ 
+            "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:user/${var.ecr_user}",
+            "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root"
+          ]
         },
         Action = [
           "ecr:ReplicateImage"

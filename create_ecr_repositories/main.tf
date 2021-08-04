@@ -12,6 +12,7 @@ module "repo_dev" {
 module "registry_policy" {
   source               = "./modules/registry_policy"
   registry_policy_name = var.registry_policy_name
+  ecr_user             = data.terraform_remote_state.backend.outputs.terraform_ecr_user_name
   depends_on = [
     module.repo_dev,
   ]
