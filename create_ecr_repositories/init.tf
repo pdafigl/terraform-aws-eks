@@ -11,7 +11,7 @@ terraform {
   backend "s3" {
     region         = "eu-west-1"
     bucket         = "tf-states-clarks"
-    key            = "users"
+    key            = "ecr_repositories"
     max_retries    = 5
     dynamodb_table = "terraform-states-lock"
     encrypt        = true
