@@ -127,7 +127,8 @@ resource "aws_iam_policy" "terraform_eks_policy" {
                 "iam:TagOpenIDConnectProvider",
                 "iam:TagRole",
                 "iam:UntagRole",
-                "iam:UpdateAssumeRolePolicy"
+                "iam:UpdateAssumeRolePolicy",
+                "iam:TagPolicy"
             ],
             "Resource": "*"
         }
