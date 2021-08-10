@@ -15,12 +15,12 @@ Recoge el código necesario para crear un backend de Terraform sobre S3, par ala
 # Contenido
 
 En este apartado se incluyen los siguientes contenidos:
-- **init.tf**: en este archivo se incluye el código de configuración del provider de AWS.
-- **main.tf**: en este archivo se incluye el código que crea en sí la infraestructura, llamando a los módulos de **bucket** y **bucket_iam**.
-- **modules**: directorio en donde se incluyen las definiciones de los módulos de **bucket** y **bucket_iam**.
-  - **bucket**: directorio que recoge los archivos para crear tanto el bucket de S3, como la tabla de DynamoDB.
-  - **bucket_iam**: directorio que recoge los archivos para crear tanto la policy como el usuario que se usarán para gestionar el Bucket y la tabla DunamoDB.
-- **output.tf**: incluye el código para los outputs del despliegue de esta parte de la infraestructura. Entre ellos están el **access_key** y **secret_key** del usuario IAM, para disponer de ellos y usarlos en otros puntos del despliegue.
+- **init.tf**: en este archivo se incluye el código de configuración del provider de AWS, junto con la configuración del data source de create users, para utlizar la misma configuración regional.
+- **main.tf**: en este archivo se incluye el código que crea en sí la infraestructura, llamando a los módulos de **repository** y **registry_policy**.
+- **modules**: directorio en donde se incluyen las definiciones de los módulos de **repository** y **registry_policy**.
+  - **repository**: directorio que recoge los archivos para crear un repositorio de imágenes dentro de ECR, y en donde se le asigna al mismo repositorio, una políctica de permisos de IAM y una política de ciclo de vida de imágenes registradas en el repositorio.
+  - **registry_policy**: asigna políticasd e IAM el registry que se crea en la cuenta la primera vez que se crea un repositorio privado.
+- **output.tf**: incluye el código para los outputs del despliegue de esta parte de la infraestructura. Entre ellos están el **código ARN del repositorio**, el **ID del repositorio** y la **URL del respositorio**.
 - **terraform.tfvars**: incluye la asignación de valores para inputs (variables) del despliegue de la infraestructura.
 - **variables.tf**: incluye la definición de inputs (o variables) que se usa en el despliegue de la infraestructura.
 

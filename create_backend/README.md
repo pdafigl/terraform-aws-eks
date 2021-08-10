@@ -26,31 +26,25 @@ En este apartado se incluyen los siguientes contenidos:
 
 # Cómo lanzarlo
 
-Nos ubicaremos en el directorio create_backend. Para este caso, las credenciales las paseremos como variables de entorno, con lo que se crearán dos variables de este tipo de la siguiente manera:
+Usaremos la configuración del archivo **~/.aws/credentials** definido ya para anteriores componentes desplegados. Se lanzará el comando para inicialiar el entorno para el despliegue, haciendo que se descarguen todas las librerías necesarias para los distintos providers utilizados, para las módulos y recursos, etc. El comando a lanzar:
 
 ```bash
-export TF_VAR_access_key=<access_key_usuario_principal>
-export TF_VAR_secret_key=<secret_key_usuario_principal>
-```
-El usuario que se utilizará, es el usuario IAM que se cree antes de empezar a desplegar la infraestructura, se comenta en el README.md principal del repositorio, las características de este usuario.
-
-Una vez creadas estas variables, se procede a lanzar la inicialización para Tertraform lanzando el siguiente comando:
-```hcl
 terraform init
 ```
-Este comando descargará todas las librerías necesarias para el provider AWS y los módulos y recursos a utilizar.
-Después de este paso, se elaborará el plan de ejecución y se volcará a una archivo **.out** para tenerlo de base para aplicar los cambios en el despliegue. Para ello se lanza:
-```hcl
+Para crear el plan de ejecución y hacerlo sobre un archivo .out que se usará después para realizar el despliegue, se lanzará:
+```bash
 terraform plan -out archivo.out
 ```
-Por último, se lanza el despliegue de la infraestructura y componentes con el cmando:
-```hcl
+Una vez se dispone del plan de ejecución, se lanza el despliegue:
+```bash
 terraform apply archivo.out
 ```
-Al finalizar el despliegue se mostrarán las salidas de información definidas dentro del archivo **output.tf**. Para poder consultar estos valores, se podrá, accediendo al directorio create_backend, ejecutar el comando **terraform output**, para ver el todos los outputs definidos o **terraform output nombre_output_concreto** para oebtener el valor para uno de los outputs en concreto, en lugar de todos. Por ejemplo:
-```hcl
-terraform output
-terraform output bucket_arn
-```
+Al finalizar el despliegue, se mostrarán una serie de salidas por pantalla, asociadas a los outputs definidos en el archivo output.tf: 
+```bash
+terraform_ecr_repository_dev_arn = "arn:aws:ecr:eu-west-1:XXXXXXXXXXXX:repository/dev"
+terraform_ecr_repository_dev_id = "XXXXXXXXXXXX"
+terraform_ecr_repository_dev_url = "XXXXXXXXXXXX.dkr.ecr.eu-west-1.amazonaws.com/dev"
+``` 
+
 
 
