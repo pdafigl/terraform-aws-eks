@@ -16,8 +16,7 @@ resource "aws_ecr_repository" "ecr_repository" {
 }
 
 # Create repository policy
-
-resource "aws_ecr_repository_policy" "ecr_registry_policy" {
+resource "aws_ecr_repository_policy" "ecr_repository_policy" {
   repository = aws_ecr_repository.ecr_repository.name
 
   policy = jsonencode({
@@ -46,4 +45,41 @@ resource "aws_ecr_repository_policy" "ecr_registry_policy" {
       }
     ]
   })
+}
+
+# Create lifecycle policy
+
+resource "aws_ecr_lifecycle_policy" "ecr_repository_policy" {
+  repository = aws_ecr_repository.ecr_repository.name
+
+  policy = jsonencode({
+    "rules": [
+        {
+            "rulePriority": 1,
+            "description": "Expire images older than 14 days",
+            "selection": {
+                "tagStatus": "untagged",
+                "countType": "sinceImagePushed",
+                "countUnit": "days",
+                "countNumber": 14
+            },
+            "action": {
+                "type": "expire"
+            }
+        },
+        {
+            "rulePriority": 2,
+            "description": "Keep last 10 images",
+            "selection": {
+                "tagStatus": "tagged",
+                "tagPrefixList": ["v"],
+                "countType": "imageCountMoreThan",
+                "countNumber": 30
+            },
+            "action": {
+                "type": "expire"
+            }
+        }
+    ]
+})
 }
