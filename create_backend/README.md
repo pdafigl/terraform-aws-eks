@@ -1,16 +1,12 @@
 # Objetivo de este apartado
 
-Recoge el código necesario para crear un backend de Terraform sobre S3, par alamacenar los archivos de estado. Las ventajas de trabajar con este tipo de backend, en lugar de utilizar almacenamiento local, son:
-- La posibilidad de permitir el trabajo colaborativo.
-- Poder ejecutar acciones sobre la infraestructura desplegada, a través de Terraform, desde cualquier equipo.
-- Poder usar el estado de un despliegue como datasource para otro, evitando el tener de replicar configuraciones en variables. Se verá un ejemplo de este uso en este proyecto, a la hora de desplegar un grupo de nodos gestionados por EKS.
+Recoge el código necesario para crear un repositorio de imágenes de contenedores bajo ECR. Para ello, con la creación del primer repositorio, por defecto, AWS crea un registry privado. 
+Se le asignarán policies de IAM tanto a registry como a repositorio y se marcarán políticas de ciclo de vida para las imágenes contenidas en el repositorio.
 
 # Componentes que se crean en este punto:
 
-- Un bucket de S3.
-- Una tabla en DynamoDB para controlo de bloqueo de objetos en el bucket para evitar que se escriba en el mismo archivo de estado de forma simultánea desde dos o más puntos distintos.
-- Una policy IAM que permite trabajar tanto con el bucket, como con la tabla de DyanmoDB.
-- Un usuario IAM para API al que se le aplicará la policy creada, para usarlo en las tareas de gestión del bucket y la tabla DynamoDB.
+- Un repositorio de ECR, con policies de IAM y de ciclo de vida para las imágenes registradas en el repositorio.
+- Una asignación de policy IMA al registry que se crea.
 
 # Contenido
 
