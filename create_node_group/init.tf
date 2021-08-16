@@ -1,6 +1,6 @@
-# Provider configuration
+# AWS provider configuration
 provider "aws" {
-  region  = data.terraform_remote_state.backend.outputs.region
+  region  = data.terraform_remote_state.eks.outputs.region
   profile = "eks"
 }
 
@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     region         = "eu-west-1"
     bucket         = "tf-states-clarks"
-    key            = "eks"
+    key            = "group_node-00"
     max_retries    = 5
     dynamodb_table = "terraform-states-lock"
     encrypt        = true
@@ -17,24 +17,13 @@ terraform {
   }
 }
 
-# Creates a datasource with terraform state of Users creation
-data "terraform_remote_state" "backend" {
+# Creates a datasource with terraform state of EKS creation
+data "terraform_remote_state" "eks" {
   backend = "s3"
   config = {
     bucket  = "tf-states-clarks"
-    key     = "users"
+    key     = "eks"
     region  = "eu-west-1"
     profile = "tfstate"
   }
 }
-
-# # Creates local variable with EKS cluster name
-# resource "random_string" "suffix" {
-#   length  = 8
-#   special = false
-# }
-
-
-# locals {
-#   cluster_name = "${var.project_name}-eks-${random_string.suffix.result}"
-# }

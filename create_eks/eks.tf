@@ -3,7 +3,7 @@
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
   # Use a auto-genearted name
-  cluster_name = local.cluster_name
+  cluster_name = var.cluster_name
   # Last version of K8S supported on AWS EKS
   cluster_version = "1.20"
   # Get de private subnets from VPC module

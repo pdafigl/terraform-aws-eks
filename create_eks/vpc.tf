@@ -21,17 +21,17 @@ module "vpc" {
 
   # Tags for associates subnets to EKS cluster
   tags = {
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 
   public_subnet_tags = {
-    "kubernetes.io/cluster/${local.cluster_name}"  = "shared"
-    "kubernetes.io/role/elb-${local.cluster_name}" = "1"
+    "kubernetes.io/cluster/${var.cluster_name}"  = "shared"
+    "kubernetes.io/role/elb-${var.cluster_name}" = "1"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${local.cluster_name}"           = "shared"
-    "kubernetes.io/role/internal-elb-${local.cluster_name}" = "1"
+    "kubernetes.io/cluster/${var.cluster_name}"           = "shared"
+    "kubernetes.io/role/internal-elb-${var.cluster_name}" = "1"
   }
 }
 
